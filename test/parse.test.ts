@@ -1,5 +1,5 @@
 import { test, expect } from "bun:test";
-import { extractDataBlob, readFanId } from "../src/parse";
+import { extractDataBlob, parseBandcampDate, readFanId } from "../src/parse";
 
 const html = await Bun.file("test/fixtures/data-blob.html").text();
 
@@ -15,4 +15,13 @@ test("readFanId pulls the numeric fan id", () => {
 
 test("extractDataBlob throws a clear error on markup it can't parse", () => {
   expect(() => extractDataBlob("<div>nope</div>")).toThrow(/data-blob/i);
+});
+
+test("parseBandcampDate converts Bandcamp date to ISO", () => {
+  expect(parseBandcampDate("30 Jun 2026 21:25:32 GMT")).toBe("2026-06-30T21:25:32.000Z");
+});
+
+test("parseBandcampDate returns null for missing/garbage", () => {
+  expect(parseBandcampDate(null)).toBeNull();
+  expect(parseBandcampDate("not a date")).toBeNull();
 });

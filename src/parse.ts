@@ -32,3 +32,16 @@ export function readFanId(blob: any): number {
   }
   return fanId;
 }
+
+export function parseBandcampDate(value: string | null | undefined): string | null {
+  if (!value) {
+    return null;
+  }
+
+  const ms = Date.parse(value);
+  if (Number.isNaN(ms)) {
+    return null;
+  }
+
+  return new Date(ms).toISOString();
+}
