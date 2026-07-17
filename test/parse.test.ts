@@ -1,7 +1,8 @@
 import { test, expect } from "bun:test";
-import { extractDataBlob, parseBandcampDate, readFanId } from "../src/parse";
+import { extractDataBlob, newestToken, normalizeItem, parseBandcampDate, readFanId } from "../src/parse";
 
 const html = await Bun.file("test/fixtures/data-blob.html").text();
+const api = await Bun.file("test/fixtures/api-response.json").json();
 
 test("extractDataBlob returns the parsed JSON object", () => {
   const blob = extractDataBlob(html);
@@ -24,4 +25,24 @@ test("parseBandcampDate converts Bandcamp date to ISO", () => {
 test("parseBandcampDate returns null for missing/garbage", () => {
   expect(parseBandcampDate(null)).toBeNull();
   expect(parseBandcampDate("not a date")).toBeNull();
+});
+
+test("normalizeItem maps a real API item to WishlistItem", () => {
+  const raw = api.items[0];
+  const item = normalizeItem(raw);
+  expect(item.itemId).toBe(raw.item_id);
+  expect(item.artist).toBe(raw.band_name);
+  expect(item.title).toBe(raw.item_title);
+  expect(item.url).toBe(raw.item_url);
+  expect(["album", "track"]).toContain(item.itemType);
+  expect(item.addedAt).toMatch(/^\d{4}-\d{2}-\d{2}T/);
+});
+
+test("normalizeItem coerces unexpected item_type to 'album'", () => {
+  const item = normalizeItem({ ...api.items[0], item_type: "weird" });
+  expect(item.itemType).toBe("album");
+});
+
+test("newestToken has the token shape", () => {
+  expect(newestToken()).toMatch(/^\d+:\d+:[at]::$/);
 });

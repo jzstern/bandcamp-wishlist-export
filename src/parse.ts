@@ -1,3 +1,5 @@
+import type { RawApiItem, WishlistItem } from "./types";
+
 const DATA_BLOB_PATTERN = /id="pagedata"[^>]*\bdata-blob="([^"]*)"/;
 
 function unescapeHtmlEntities(value: string): string {
@@ -44,4 +46,20 @@ export function parseBandcampDate(value: string | null | undefined): string | nu
   }
 
   return new Date(ms).toISOString();
+}
+
+export function normalizeItem(raw: RawApiItem): WishlistItem {
+  return {
+    itemId: raw.item_id,
+    itemType: raw.item_type === "track" ? "track" : "album",
+    artist: raw.band_name,
+    title: raw.item_title,
+    url: raw.item_url,
+    artUrl: raw.item_art_url ?? null,
+    addedAt: parseBandcampDate(raw.added),
+  };
+}
+
+export function newestToken(): string {
+  return "9999999999:9999999999:a::";
 }
