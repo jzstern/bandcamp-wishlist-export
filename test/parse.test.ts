@@ -1,5 +1,11 @@
-import { test, expect } from "bun:test";
-import { extractDataBlob, newestToken, normalizeItem, parseBandcampDate, readFanId } from "../src/parse";
+import { expect, test } from "bun:test";
+import {
+  extractDataBlob,
+  newestToken,
+  normalizeItem,
+  parseBandcampDate,
+  readFanId,
+} from "../src/parse";
 
 const html = await Bun.file("test/fixtures/data-blob.html").text();
 const api = await Bun.file("test/fixtures/api-response.json").json();
@@ -19,7 +25,9 @@ test("extractDataBlob throws a clear error on markup it can't parse", () => {
 });
 
 test("parseBandcampDate converts Bandcamp date to ISO", () => {
-  expect(parseBandcampDate("30 Jun 2026 21:25:32 GMT")).toBe("2026-06-30T21:25:32.000Z");
+  expect(parseBandcampDate("30 Jun 2026 21:25:32 GMT")).toBe(
+    "2026-06-30T21:25:32.000Z",
+  );
 });
 
 test("parseBandcampDate returns null for missing/garbage", () => {

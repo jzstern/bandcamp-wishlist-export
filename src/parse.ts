@@ -15,14 +15,18 @@ function unescapeHtmlEntities(value: string): string {
 export function extractDataBlob(html: string): any {
   const match = DATA_BLOB_PATTERN.exec(html);
   if (!match || match[1] === undefined) {
-    throw new Error("Could not find a #pagedata element with a data-blob attribute");
+    throw new Error(
+      "Could not find a #pagedata element with a data-blob attribute",
+    );
   }
 
   const json = unescapeHtmlEntities(match[1]);
   try {
     return JSON.parse(json);
   } catch {
-    throw new Error("Found data-blob attribute but could not parse it as JSON; Bandcamp's markup may have changed");
+    throw new Error(
+      "Found data-blob attribute but could not parse it as JSON; Bandcamp's markup may have changed",
+    );
   }
 }
 
@@ -35,7 +39,9 @@ export function readFanId(blob: any): number {
   return fanId;
 }
 
-export function parseBandcampDate(value: string | null | undefined): string | null {
+export function parseBandcampDate(
+  value: string | null | undefined,
+): string | null {
   if (!value) {
     return null;
   }
