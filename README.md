@@ -1,5 +1,8 @@
 # bandcamp-wishlist-export
 
+[![CI](https://github.com/jzstern/bandcamp-wishlist-export/actions/workflows/ci.yml/badge.svg)](https://github.com/jzstern/bandcamp-wishlist-export/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 Export a **public** Bandcamp wishlist to a single, easy-to-parse JSON file.
 
 A zero-dependency [Bun](https://bun.sh) + TypeScript CLI. It reads the wishlist
@@ -88,6 +91,19 @@ place to fix.
 - A wishlist set to private returns no items — make it public to export it.
 - Be a good citizen: the tool paces its requests (~4/sec) and fetches only what
   the public web UI already serves.
+
+## Disclaimer
+
+Not affiliated with or endorsed by Bandcamp. This tool reads only the public data
+Bandcamp's own web UI already serves, via an undocumented internal endpoint that may
+change or break at any time. Use it for your own wishlists and be considerate of
+Bandcamp's servers — review their [Terms of Use](https://bandcamp.com/terms_of_use)
+and use at your own risk.
+
+## Contributing
+
+Issues and pull requests welcome. Please run `bun test`, `bunx tsc --noEmit`, and
+`bun run check` before opening a PR.
 
 ## License
 

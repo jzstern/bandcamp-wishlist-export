@@ -115,8 +115,8 @@ and `currency` are trivially available from the API and can be added later if a
 bun run src/cli.ts --user <username> [--out ./output/wishlist.json] [--pretty] [--count 100]
 ```
 
-Defaults: `--user jzstern`, `--out ./output/wishlist.json`, pretty off, count 100.
-The username is not a secret, so it is a plain flag (no Doppler).
+`--user` is required. Defaults: `--out ./output/wishlist.json`, pretty off, count 100.
+The username is not a secret, so it is a plain flag.
 
 ## Error handling
 
