@@ -20,8 +20,17 @@ test("readFanId pulls the numeric fan id", () => {
   expect(readFanId(extractDataBlob(html))).toBe(1238758);
 });
 
+test("readFanId throws when fan_id is missing or non-numeric", () => {
+  expect(() => readFanId({})).toThrow(/fan_id/i);
+});
+
 test("extractDataBlob throws a clear error on markup it can't parse", () => {
   expect(() => extractDataBlob("<div>nope</div>")).toThrow(/data-blob/i);
+});
+
+test("extractDataBlob throws when data-blob is present but not valid JSON", () => {
+  const markup = '<div id="pagedata" data-blob="{not json"></div>';
+  expect(() => extractDataBlob(markup)).toThrow(/data-blob|markup|parse/i);
 });
 
 test("parseBandcampDate converts Bandcamp date to ISO", () => {
@@ -49,6 +58,14 @@ test("normalizeItem maps a real API item to WishlistItem", () => {
 test("normalizeItem coerces unexpected item_type to 'album'", () => {
   const item = normalizeItem({ ...api.items[0], item_type: "weird" });
   expect(item.itemType).toBe("album");
+});
+
+test("normalizeItem preserves 'track' type from a real track item", () => {
+  const rawTrack = api.items.find(
+    (item: { item_type: string }) => item.item_type === "track",
+  );
+  expect(rawTrack).toBeDefined();
+  expect(normalizeItem(rawTrack).itemType).toBe("track");
 });
 
 test("newestToken has the token shape", () => {
