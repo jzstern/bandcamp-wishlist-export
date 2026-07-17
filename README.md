@@ -1,33 +1,38 @@
-# bandcamp-wishlist
+# bandcamp-wishlist-export
 
 Export a **public** Bandcamp wishlist to a single, easy-to-parse JSON file.
 
 A zero-dependency [Bun](https://bun.sh) + TypeScript CLI. It reads the wishlist
 the same way Bandcamp's own web UI does: it fetches the public profile page once
-to resolve your `fan_id`, then pages through Bandcamp's `wishlist_items` API until
-the whole list is collected. No login, no credentials — it only works with
-wishlists that are public (the Bandcamp default).
+to resolve the account's `fan_id`, then pages through Bandcamp's `wishlist_items`
+API until the whole list is collected. No login, no credentials — it only works
+with wishlists that are public (the Bandcamp default).
+
+## Requirements
+
+- [Bun](https://bun.sh) 1.x
 
 ## Install
 
 ```bash
-pnpm install
+git clone https://github.com/jzstern/bandcamp-wishlist-export.git
+cd bandcamp-wishlist-export
+bun install
 ```
 
 ## Usage
 
 ```bash
-bun run src/cli.ts --user <username> [--out ./output/wishlist.json] [--pretty] [--count 100]
-# or via the package script:
-pnpm export -- --user <username>
+bun run src/cli.ts --user <username> [options]
 ```
 
-| Flag       | Default                  | Description                                     |
-| ---------- | ------------------------ | ----------------------------------------------- |
-| `--user`   | `jzstern`                | Bandcamp username (the `bandcamp.com/<username>` part). |
-| `--out`    | `./output/wishlist.json` | Output file path. Parent dirs are created.      |
-| `--pretty` | off                      | Pretty-print the JSON (2-space indent).         |
-| `--count`  | `100`                    | Items fetched per API request.                  |
+| Flag       | Default                  | Description                                             |
+| ---------- | ------------------------ | ------------------------------------------------------- |
+| `--user`   | (required)               | Bandcamp username (the `bandcamp.com/<username>` part). |
+| `--out`    | `./output/wishlist.json` | Output file path. Parent dirs are created.              |
+| `--pretty` | off                      | Pretty-print the JSON (2-space indent).                 |
+| `--count`  | `100`                    | Items fetched per API request.                          |
+| `--help`   |                          | Show usage.                                             |
 
 Example:
 
@@ -67,7 +72,7 @@ bun run src/cli.ts --user jzstern --pretty
 ```bash
 bun test          # unit tests for the pure parsing layer
 bunx tsc --noEmit # typecheck
-pnpm check        # Biome lint + format
+bun run check     # Biome lint + format
 ```
 
 `src/parse.ts` holds the pure, unit-tested parsing functions (tested against real
@@ -81,3 +86,9 @@ place to fix.
   without notice. Parsing failures surface a clear error rather than writing a
   partial file.
 - A wishlist set to private returns no items — make it public to export it.
+- Be a good citizen: the tool paces its requests (~4/sec) and fetches only what
+  the public web UI already serves.
+
+## License
+
+[MIT](LICENSE)

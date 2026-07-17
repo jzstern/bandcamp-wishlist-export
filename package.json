@@ -1,8 +1,21 @@
 {
-  "name": "bandcamp-wishlist",
+  "name": "bandcamp-wishlist-export",
   "version": "0.1.0",
+  "description": "Export a public Bandcamp wishlist to a single easy-to-parse JSON file",
   "type": "module",
   "private": true,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jzstern/bandcamp-wishlist-export.git"
+  },
+  "keywords": [
+    "bandcamp",
+    "wishlist",
+    "export",
+    "cli",
+    "bun"
+  ],
   "scripts": {
     "export": "bun run src/cli.ts",
     "test": "bun test",
